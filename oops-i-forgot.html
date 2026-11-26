@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Oops, I Forgot! 💜</title>
+<style>
+:root{--bg:#f4f0ff;--card:#fff;--tx:#292344;--pri:#7654e8;--soft:#f3efff;--m1:#eee7ff;--m2:#fceaff;--bd:#ddd;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#1b1730;--card:#272142;--tx:#efeaff;--pri:#b79cff;--soft:#322a55;--m1:#3a2f66;--m2:#4a2f5e;--bd:#4a4270}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#1b1730;--card:#272142;--tx:#efeaff;--pri:#b79cff;--soft:#322a55;--m1:#3a2f66;--m2:#4a2f5e;--bd:#4a4270}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--tx)}
+header{background:linear-gradient(135deg,#7654e8,#ae83ff);color:#fff;padding:28px 20px;text-align:center;border-radius:0 0 30px 30px}
+header h1{font-size:32px;margin:0 0 6px}header p{margin:4px 0}
+.wrap{max-width:750px;margin:auto;padding:14px}
+.card{background:var(--card);padding:20px;margin:16px 0;border-radius:22px;box-shadow:0 5px 20px rgba(118,84,232,.15)}
+h2{color:var(--pri);margin-top:0}
+input,select,textarea{width:100%;padding:14px;margin:6px 0;border:1px solid var(--bd);border-radius:12px;font-size:16px;font-family:inherit;background:var(--card);color:var(--tx)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+button{background:#805de9;color:#fff;border:none;padding:12px 16px;min-height:46px;border-radius:12px;font-size:16px;cursor:pointer;margin:4px 3px;touch-action:manipulation}
+.big{width:100%}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.stat{background:var(--soft);padding:14px 4px;border-radius:15px;text-align:center;font-size:14px}
+.stat strong{display:block;font-size:26px;color:var(--pri)}
+.msg{background:linear-gradient(135deg,var(--m1),var(--m2));padding:18px;border-radius:18px;margin-top:12px;font-size:17px;line-height:1.5;white-space:pre-line}
+.status{font-weight:bold;color:var(--pri);min-height:22px;margin:6px 0 0}
+.filters{display:flex}.filters button{background:var(--m1);color:var(--pri);flex:1}.filters button.on{background:#805de9;color:#fff}
+.event{background:var(--soft);padding:14px;border-radius:15px;margin:12px 0;border-left:6px solid #f5a623}
+.event.pHigh{border-left-color:#ff647c}.event.pLow,.event.done{border-left-color:#35b879}
+.event.done{opacity:.6}.event.late{outline:2px solid #ff647c}
+.event p{margin:6px 0}.left{color:var(--pri);font-weight:bold}
+.ok{background:#35b879}.del{background:#ff647c}
+.badges{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.badge{background:var(--soft);border-radius:15px;padding:14px;text-align:center}
+.locked{opacity:.35;filter:grayscale(1)}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(150px);background:#292344;color:#fff;padding:14px 20px;border-radius:30px;transition:.3s;max-width:90%;text-align:center;z-index:9}
+#toast.show{transform:translateX(-50%) translateY(0)}
+footer{text-align:center;padding:25px;color:#888}
+@media(max-width:450px){.row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><h1>💜 Oops, I Forgot!</h1><p>Your life. Your plans. Our reminders.</p><p>✨ YOUR PERSONAL BOOST ASSISTANT ✨</p></header>
+<div class="wrap">
+<div class="card"><h2>👋 Welcome back!</h2><p id="today"></p><div class="msg" id="hello">Boost is waking up... ☀️</div>
+<div class="stats"><div class="stat"><strong id="nUp">0</strong>Upcoming</div><div class="stat"><strong id="nLate">0</strong>Overdue</div><div class="stat"><strong id="nDone">0</strong>Done</div></div>
+<div class="msg" id="next">Add a reminder to start your countdown!</div></div>
+
+<div class="card"><h2>📅 Add a reminder</h2>
+<input id="name" placeholder="What do you need to remember?" maxlength="80">
+<div class="row"><input id="date" type="date"><input id="time" type="time"></div>
+<div class="row"><select id="cat"><option>📚 School</option><option>💼 Work</option><option>👨‍👩‍👧 Family</option><option>👯 Friends</option><option>❤️ Personal</option><option>🎉 Other</option></select>
+<select id="pri"><option value="Low">🟢 Low priority</option><option value="Medium" selected>🟠 Medium priority</option><option value="High">🔴 High priority</option></select></div>
+<button class="big" id="addBtn">➕ Add reminder</button><p class="status" id="fs"></p></div>
+
+<div class="card"><h2>🗓️ Your reminders</h2><input id="q" placeholder="🔍 Search your reminders...">
+<div class="filters"><button data-f="all" class="on">All</button><button data-f="up">Upcoming</button><button data-f="done">Done</button></div>
+<div id="list"></div></div>
+
+<div class="card"><h2>🧠 Boost IQ</h2><p>Boost looks at your plans and helps you organise your day!</p>
+<button class="big" id="iqBtn">✨ Analyse my day</button><div class="msg" id="iq">I’m ready to help you get organised! 💜</div></div>
+
+<div class="card"><h2>🤖 Meet Boost!</h2><p>Choose Boost’s personality:</p>
+<select id="mood"><option value="friendly">😊 Friendly</option><option value="motivational">🔥 Motivational</option><option value="calm">🌿 Calm</option><option value="funny">😂 Funny</option></select>
+<div id="hb" style="display:none"><p>Choose your humour style:</p><select id="humour"><option value="silly">🤪 Silly</option><option value="savage">💀 Savage</option><option value="sarcastic">😏 Sarcastic</option><option value="random">🎲 Random</option></select></div>
+<button class="big" id="smileBtn">✨ Make me smile</button><div class="msg" id="bm">Hey superstar! I’m Boost! 💜</div></div>
+
+<div class="card"><h2>🏆 Your achievements</h2><div class="badges" id="badges"></div></div>
+
+<div class="card"><h2>🔒 Backup your reminders</h2><p>Tap “Make backup”, copy the code and keep it in a notes app. To restore, paste it here and tap “Restore”.</p>
+<textarea id="bk" rows="4" placeholder="Your backup code appears here..."></textarea>
+<button id="mk">💾 Make backup</button><button id="rs">♻️ Restore</button><p class="status" id="bs"></p></div>
+</div>
+<footer>Made with 💜 for people who forget things.<br><br>Oops, I Forgot! © 2026</footer>
+<div id="toast"></div>
+<script>
+const $=id=>document.getElementById(id);
+function rd(k,f){try{const v=JSON.parse(localStorage.getItem(k));return v===null?f:v}catch(e){return f}}
+function wr(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}}
+function clean(l){if(!Array.isArray(l))return[];return l.filter(e=>e&&e.name&&e.date).map((e,i)=>({id:e.id||Date.now()+i,name:String(e.name),date:String(e.date),cat:e.cat||"🎉 Other",pri:e.pri||"Medium",done:e.done===true}))}
+let ev=clean(rd("oopsEvents",[])),flt="all";
+const pad=n=>String(n).padStart(2,"0"),T=e=>new Date(e.date).getTime(),pick=l=>l[Math.floor(Math.random()*l.length)];
+function save(){if(!wr("oopsEvents",ev))toast("⚠️ Can’t save here. Use the Backup box!")}
+function toast(t){const x=$("toast");x.textContent=t;x.classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>x.classList.remove("show"),3500)}
+function left(ms){const d=Math.floor(ms/864e5),h=Math.floor(ms%864e5/36e5),m=Math.floor(ms%36e5/6e4),s=Math.floor(ms%6e4/1e3);return d>0?d+"d "+h+"h "+m+"m":h>0?h+"h "+m+"m "+s+"s":m+"m "+s+"s"}
+const up=()=>ev.filter(e=>!e.done&&T(e)>Date.now()).sort((a,b)=>T(a)-T(b));
+const late=()=>ev.filter(e=>!e.done&&T(e)<=Date.now());
+const sameDay=e=>new Date(e.date).toDateString()===new Date().toDateString();
+
+function add(){
+  const s=$("fs"),name=$("name").value.trim(),d=$("date").value,t=$("time").value;
+  if(!name){s.textContent="😂 Oops! Type what you need to remember first.";return}
+  if(!d||!t){s.textContent="📅 Please pick a date and a time.";return}
+  const full=d+"T"+t;
+  if(new Date(full).getTime()<=Date.now()){s.textContent="⏰ That time has already passed. Pick a future time!";return}
+  ev.push({id:Date.now()+Math.random(),name:name,date:full,cat:$("cat").value,pri:$("pri").value,done:false});
+  save();$("name").value="";defTime();s.textContent="✅ Added! Scroll down to see it.";toast("💜 Added: "+name);render()
+}
+function toggle(id){const e=ev.find(x=>x.id===id);if(!e)return;e.done=!e.done;save();render();if(e.done)toast("🎉 YOU DID IT! "+e.name+" is done! Boost is SO proud! 💜")}
+function remove(id){ev=ev.filter(x=>x.id!==id);save();render();toast("🗑️ Reminder deleted")}
+
+function render(){
+  $("nUp").textContent=up().length;$("nLate").textContent=late().length;$("nDone").textContent=ev.filter(e=>e.done).length;
+  const q=$("q").value.toLowerCase();
+  let l=ev.filter(e=>(e.name+" "+e.cat).toLowerCase().includes(q));
+  if(flt==="up")l=l.filter(e=>!e.done);if(flt==="done")l=l.filter(e=>e.done);
+  l.sort((a,b)=>(a.done-b.done)||(T(a)-T(b)));
+  const box=$("list");box.innerHTML="";
+  if(!l.length){const p=document.createElement("p");p.textContent=q?"No matching reminders. 🔍":"No reminders here yet. Add one! 💜";box.appendChild(p)}
+  l.forEach(e=>{
+    const lt=!e.done&&T(e)<=Date.now(),div=document.createElement("div");
+    div.className="event p"+e.pri+(e.done?" done":"")+(lt?" late":"");
+    const a=document.createElement("strong");a.textContent="📌 "+e.name;
+    const b=document.createElement("p");b.textContent=new Date(e.date).toLocaleString("en-GB",{weekday:"short",day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"});
+    const c=document.createElement("p");c.textContent=e.cat+" | "+e.pri+" priority";
+    const s=document.createElement("p");s.className="left";s.textContent=e.done?"✅ Completed":lt?"⚠️ Overdue!":"⏳ "+left(T(e)-Date.now())+" to go";
+    const ok=document.createElement("button");ok.className="ok";ok.textContent=e.done?"↩ Undo":"✓ Complete";ok.onclick=()=>toggle(e.id);
+    const dl=document.createElement("button");dl.className="del";dl.textContent="🗑️ Delete";dl.onclick=()=>remove(e.id);
+    div.append(a,b,c,s,ok,dl);box.appendChild(div)
+  });
+  nextUp();hello();badges()
+}
+function nextUp(){const n=up()[0];$("next").textContent=n?"🎯 Next up: "+n.name+"\n"+left(T(n)-Date.now())+" to go! 💜":"No upcoming reminders. Enjoy some free time! 💜"}
+function hello(){
+  const h=new Date().getHours(),u=up(),td=u.filter(sameDay);
+  let t=(h<12?"Good morning":h<18?"Good afternoon":"Good evening")+", legend! "+(h<12?"☀️":h<18?"🌤️":"🌙")+"\n";
+  if(!ev.length)t+="Add your first reminder and I’ll keep an eye on it! 💜";
+  else if(!u.length)t+="Nothing coming up. Super organised, or did you forget to add something? 😂";
+  else if(td.length)t+="You’ve got "+td.length+(td.length===1?" thing":" things")+" today. Let’s make it ridiculously productive! 🚀";
+  else t+="Nothing today, but "+u.length+" coming up. I’ve got your back! 💜";
+  if(late().length)t+="\n⚠️ "+late().length+" overdue. Tick them off or delete them!";
+  $("hello").textContent=t
+}
+function iq(){
+  const u=up(),td=u.filter(sameDay),hi=u.filter(e=>e.pri==="High"),lt=late();
+  let m="🧠 BOOST IQ REPORT\n\n";
+  if(!u.length&&!lt.length)m+="Your schedule is clear! Add a reminder whenever you need me. 💜";
+  else{
+    m+="📋 Upcoming: "+u.length+"\n"+(td.length?"📅 Today: "+td.length+"\n":"🌿 Nothing today. Nice!\n");
+    if(lt.length){m+="\n⚠️ OVERDUE:\n";lt.forEach(e=>{m+="• "+e.name+"\n"})}
+    if(hi.length){m+="\n🔴 HIGH PRIORITY:\n";hi.forEach(e=>{m+="⭐ "+e.name+"\n"})}
+    if(u.length)m+="\n🎯 Next: "+u[0].name+" in "+left(T(u[0])-Date.now())+"\n\n💡 Tip: "+(hi.length?"Do your high-priority things first!":"Start preparing early so you’re not rushing!")
+  }
+  $("iq").textContent=m
+}
+const M={
+friendly:["Hey superstar! 💜 Don’t forget {e}!","Your future self says thank you for remembering {e}! 😊","Giant virtual hug! 🤗 Remember {e}!","Hello legend! Time to get ready for {e}!","I’ve remembered so you don’t have to! 💜","You’re doing AMAZING! Don’t forget {e}!"],
+motivational:["LET’S GOOOO! 🔥 Time to smash {e}!","Champions don’t forget their plans. Go get {e}!","BIG ENERGY! BIG DREAMS! BIG RESULTS!","Wake up. Show up. Smash it. 💪","You’re stronger than your excuses! Crush {e}!","YOUR TIME IS NOW! {e} won’t do itself!"],
+calm:["Take a breath. 🌿 Remember {e}. You’ve got this.","One thing at a time. You’re doing just fine.","No rush. Take a moment and get ready for {e}.","Be kind to yourself. Remember {e}.","Slow down, breathe, and get ready. 🌿","Everything starts with one small step."],
+silly:["🚨 BREAKING NEWS: Local human nearly forgot {e}!","A penguin has been dispatched to remind you about {e}. 🐧","A potato told me to remind you about {e}. I don’t question potatoes. 🥔","Your brain has 47 tabs open and none are working.","A duck has more organisation than you right now. QUACK! 🦆","The spaghetti council demands you remember {e}. 🍝"],
+savage:["You remembered to scroll for 3 hours but nearly forgot {e}? 💀","Your memory needs a software update. Immediately.","Even Internet Explorer remembers things faster than you.","Your memory is giving free trial energy. 💀","You need a reminder to remember your reminders.","I’m carrying this entire friendship. Remember {e}!"],
+sarcastic:["Oh wow! Another reminder! Who could have predicted this? 🙄","Surprise! You have {e}. Shocking.","Incredible memory you’ve got there. Truly inspirational.","Don’t thank me all at once.","I’m sure you would have remembered {e}. Eventually. 😏","Absolutely flawless organisation. If we ignore everything."],
+random:["THE POTATO COUNCIL HAS DECIDED: Remember {e}! 🥔","A mysterious goose knows what you did last Tuesday. 🪿","A frog in a tiny hat believes in you. 🐸","Your socks have formed a committee.","A wizard named Steve has entered your reminders. 🧙","An alien travelled 4 million light years to remind you about {e}. 👽"]};
+function smile(){const m=$("mood").value,k=m==="funny"?$("humour").value:m,n=up()[0];$("bm").textContent=pick(M[k]).split("{e}").join(n?n.name:"your next event")}
+function mood(){$("hb").style.display=$("mood").value==="funny"?"block":"none";wr("oopsPrefs",{m:$("mood").value,h:$("humour").value})}
+function badges(){
+  const n=ev.filter(e=>e.done).length,box=$("badges");box.innerHTML="";
+  [["🌟 First Steps",1],["🔥 Getting Started",5],["🏆 Superstar",10],["👑 Legend",25],["💎 Reminder Royalty",50],["🚀 Unstoppable",100]].forEach(b=>{
+    const d=document.createElement("div");d.className="badge"+(n<b[1]?" locked":"");
+    const t=document.createElement("strong");t.textContent=b[0];
+    const p=document.createElement("p");p.textContent="Complete "+b[1]+(b[1]===1?" reminder":" reminders");
+    const s=document.createElement("small");s.textContent=n>=b[1]?"UNLOCKED! 🎉":n+"/"+b[1];
+    d.append(t,p,s);box.appendChild(d)})
+}
+function mkBk(){$("bk").value=JSON.stringify(ev);$("bs").textContent="✅ Backup made! Copy it into a notes app."}
+function rsBk(){try{const d=clean(JSON.parse($("bk").value));if(!d.length){$("bs").textContent="😕 No reminders in that backup.";return}ev=d;save();render();$("bs").textContent="✅ Restored "+d.length+" reminders!"}catch(e){$("bs").textContent="😕 That isn’t a backup code."}}
+function defTime(){const d=new Date(Date.now()+36e5);$("date").value=d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());$("time").value=pad(d.getHours())+":"+pad(d.getMinutes())}
+
+$("today").textContent="Today is "+new Date().toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+const pf=rd("oopsPrefs",{});if(pf.m)$("mood").value=pf.m;if(pf.h)$("humour").value=pf.h;mood();
+$("addBtn").onclick=add;$("iqBtn").onclick=iq;$("smileBtn").onclick=smile;$("mood").onchange=mood;$("humour").onchange=mood;$("q").oninput=render;$("mk").onclick=mkBk;$("rs").onclick=rsBk;
+document.querySelectorAll(".filters button").forEach(b=>{b.onclick=()=>{flt=b.dataset.f;document.querySelectorAll(".filters button").forEach(x=>x.classList.remove("on"));b.classList.add("on");render()}});
+defTime();render();setInterval(nextUp,1000);setInterval(render,30000);
+</script>
+</body>
+</html>
