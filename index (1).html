@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Oops, I Forgot! 💜</title>
+<style>
+:root{--p:#8b5cf6;--pd:#6d3fd1;--g:#35b879;--gd:#259560;--r:#ff647c;--rd:#d94a60;--bg:#f4f0ff;--tx:#292344;--soft:#f3efff;--b1:#c4a6ff;--b2:#8b5cf6;--b3:#6d3fd1;--pj:#ff8fc8}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--tx);padding-bottom:95px}
+header{background:linear-gradient(135deg,#7654e8,#ae83ff);color:#fff;text-align:center;padding:14px;border-radius:0 0 26px 26px}
+header h1{margin:0;font-size:25px}header p{margin:2px 0 0;font-size:13px}
+body.night{--bg:#1d1838;--tx:#efeaff;--soft:#322a55}
+body.night .card,body.night .stat,body.night nav,body.night .bubble,body.night input,body.night select,body.night textarea,body.night .filters button,body.night .chip{background:#2a2350;color:#efeaff;border-color:#463d75}
+body.night nav button.on{background:#3a2f66}
+.wrap{max-width:700px;margin:auto;padding:14px}
+.page{display:none}.page.active{display:block;animation:pop .35s}
+@keyframes pop{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.card{background:#fff;padding:18px;margin:14px 0;border-radius:22px;box-shadow:0 4px 0 #e2d9fb}
+h2{color:var(--p);margin:0 0 10px}body.night h2{color:#b79cff}
+input,select,textarea{width:100%;padding:14px;margin:6px 0;border:2px solid #e2d9fb;border-radius:14px;font-size:16px;font-family:inherit;background:#fff;color:var(--tx)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn{display:block;width:100%;background:linear-gradient(180deg,#a184ff,var(--p));color:#fff;border:0;border-bottom:6px solid var(--pd);padding:14px;border-radius:16px;font-size:16px;font-weight:bold;margin:8px 0;cursor:pointer;touch-action:manipulation;box-shadow:0 7px 0 rgba(73,45,145,.16),0 10px 18px rgba(60,40,110,.12);transition:transform .14s cubic-bezier(.2,1.7,.4,1),box-shadow .14s,border-bottom-width .14s;user-select:none;-webkit-user-select:none}
+.btn:active{transform:translateY(5px) scale(.985);border-bottom-width:1px;box-shadow:0 1px 0 rgba(73,45,145,.18),0 3px 6px rgba(60,40,110,.10)}
+.btn.g{background:linear-gradient(180deg,#54d99b,var(--g));border-bottom-color:var(--gd)}.btn.r{background:linear-gradient(180deg,#ff8b9e,var(--r));border-bottom-color:var(--rd)}
+.btn.sm{display:inline-block;width:auto;padding:10px 14px;font-size:14px;margin:6px 6px 0 0}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+.chip{position:relative;overflow:hidden;border:2px solid #e2d9fb;border-bottom:5px solid #d4c9ee;background:linear-gradient(180deg,#fff,#f2edff);border-radius:15px;padding:10px 15px;font-size:22px;color:var(--tx);touch-action:manipulation;cursor:pointer;box-shadow:0 5px 0 #e5def3,0 8px 13px rgba(64,45,112,.10);transition:transform .14s cubic-bezier(.2,1.8,.4,1),box-shadow .14s,border-bottom-width .14s,background .16s;user-select:none;-webkit-user-select:none}
+.chip:active{transform:translateY(4px) scale(.94);border-bottom-width:1px;box-shadow:0 1px 0 #d4c9ee,0 2px 5px rgba(64,45,112,.10)}
+.chip.on{border-color:var(--p);border-bottom-color:var(--pd);background:linear-gradient(180deg,#f7f2ff,#e5d9ff);box-shadow:0 5px 0 #c9b5f5,0 8px 14px rgba(109,63,209,.18);animation:selected-pop .32s cubic-bezier(.2,1.7,.4,1)}
+.chip.lock{opacity:.45;cursor:not-allowed;filter:grayscale(.35)}
+@keyframes selected-pop{0%{transform:scale(.88)}58%{transform:scale(1.13)}100%{transform:scale(1)}}
+.avatar-preview{display:flex;align-items:center;justify-content:center;gap:14px;margin:16px auto 0;padding:12px 16px;max-width:310px;border:2px solid #e4dcf5;border-radius:18px;background:linear-gradient(180deg,#fff,#f5f0ff);box-shadow:0 4px 0 #e3daf3;text-align:left}
+#avatarBig{font-size:42px;line-height:1;display:inline-block;animation:avatar-bob 2s ease-in-out infinite}
+.avatar-preview strong,.avatar-preview small{display:block}.avatar-preview small{margin-top:4px;color:#83789f}
+@keyframes avatar-bob{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-4px) rotate(4deg)}}
+body.night .avatar-preview{background:#2a2350;border-color:#463d75;box-shadow:0 4px 0 #19152f}
+body.night .avatar-preview small{color:#c5b9e8}
+.mb{text-align:center}
+.mascot{width:130px;height:120px;margin:34px auto 0;background:radial-gradient(circle at 35% 30%,var(--b1),var(--b2));border-radius:50% 50% 46% 46%;position:relative;animation:bounce 2s infinite;box-shadow:0 8px 0 var(--b3)}
+.eye{position:absolute;top:38px;width:30px;height:34px;background:#fff;border-radius:50%}
+.eye:after{content:"";position:absolute;top:10px;left:9px;width:14px;height:16px;background:#292344;border-radius:50%}
+.eye.l{left:24px}.eye.rt{right:24px}
+.brow{display:none;position:absolute;top:28px;width:30px;height:6px;background:#292344;border-radius:4px}
+.brow.l{left:22px;transform:rotate(-22deg)}.brow.rt{right:22px;transform:rotate(22deg)}
+.mouth{position:absolute;bottom:20px;left:42px;width:46px;height:22px;border-bottom:6px solid #fff;border-radius:0 0 46px 46px}
+.ear{position:absolute;top:-14px;width:30px;height:30px;background:var(--b2);border-radius:50% 50% 0 50%;transform:rotate(-45deg)}
+.ear.l{left:14px}.ear.rt{right:14px;transform:rotate(45deg) scaleX(-1)}
+.hat{position:absolute;top:-44px;left:0;right:0;font-size:44px;line-height:1}
+.face{position:absolute;top:30px;left:0;right:0;font-size:56px;line-height:1}
+.zzz{display:none;position:absolute;top:-28px;right:-26px;font-size:28px;animation:float 2s infinite}
+.cap{display:none;position:absolute;top:-52px;left:calc(50% - 40px);width:0;height:0;border-left:40px solid transparent;border-right:40px solid transparent;border-bottom:58px solid var(--pj);transform:rotate(12deg)}
+.cap:after{content:"";position:absolute;top:-14px;left:-48px;width:18px;height:18px;background:#fff;border-radius:50%}
+.pj{display:none;position:absolute;bottom:0;left:0;right:0;height:40px;border-radius:0 0 46% 46%;background:repeating-linear-gradient(90deg,var(--pj) 0 12px,#fff 12px 24px);opacity:.92}
+.night-m .cap,.night-m .pj{display:block}.night-m .hat,.night-m .face{display:none}
+.m-sleepy .eye{height:6px;top:56px;border-radius:0 0 30px 30px;background:#292344}.m-sleepy .eye:after{display:none}
+.m-sleepy .mouth{width:20px;height:8px;left:55px}.m-sleepy .zzz{display:block}
+.m-sleepy{animation:sway 3s infinite}
+.m-worried .brow{display:block}.m-worried .mouth{border-bottom:none;border-top:6px solid #fff;border-radius:46px 46px 0 0;bottom:24px}
+.m-wow .eye{transform:scale(1.25)}.m-wow .mouth{width:24px;height:28px;border:6px solid #fff;border-radius:50%;left:53px}
+.m-party{animation:jump .6s infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes jump{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-26px) rotate(6deg)}}
+@keyframes sway{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.bubble{background:#fff;border:3px solid #e2d9fb;border-radius:20px;padding:14px;margin-top:16px;font-size:17px;line-height:1.5;white-space:pre-line;text-align:left}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat{background:#fff;border-radius:18px;padding:12px 4px;text-align:center;font-size:13px;box-shadow:0 4px 0 #e2d9fb}
+.stat strong{display:block;font-size:24px}
+.bar{height:16px;background:#e2d9fb;border-radius:10px;overflow:hidden;margin-top:6px}
+.bar div{height:100%;width:0;background:linear-gradient(90deg,#ffd43b,#ffa94d);transition:width .6s}
+.msg{background:linear-gradient(135deg,#eee7ff,#fceaff);color:#292344;padding:16px;border-radius:18px;margin-top:10px;font-size:16px;line-height:1.5;white-space:pre-line}
+.status{font-weight:bold;color:var(--p);min-height:20px;margin:4px 0 0}
+.filters{display:flex;gap:8px}.filters button{flex:1;padding:10px;border:2px solid #e2d9fb;border-bottom:5px solid #d7cbed;background:linear-gradient(180deg,#fff,#f3efff);color:var(--p);border-radius:14px;font-weight:bold;font-size:15px;cursor:pointer;touch-action:manipulation;box-shadow:0 4px 0 #e8e1f4;transition:transform .13s cubic-bezier(.2,1.7,.4,1),box-shadow .13s}
+.filters button:active{transform:translateY(4px);border-bottom-width:1px;box-shadow:0 1px 0 #e8e1f4}
+.filters button.on{background:linear-gradient(180deg,#a184ff,var(--p));color:#fff;border-color:var(--p);border-bottom-color:var(--pd)}
+.event{background:var(--soft);padding:14px;border-radius:18px;margin:12px 0;border-left:8px solid #f5a623}
+.event.pHigh{border-left-color:var(--r)}.event.pLow,.event.done{border-left-color:var(--g)}
+.event.done{opacity:.6}.event.late{outline:2px solid var(--r)}
+.event p{margin:6px 0}.left{color:var(--p);font-weight:bold}
+.badges{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.badge{background:var(--soft);border-radius:18px;padding:14px;text-align:center}
+.badge .em{font-size:40px;display:block}.locked{opacity:.35;filter:grayscale(1)}
+.mood-row{display:flex;gap:10px;align-items:center;margin:8px 0}.mood-row span{font-size:28px}
+nav{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:3px solid #e2d9fb;display:flex;padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px));z-index:5}
+nav button{flex:1;background:linear-gradient(180deg,#fff,#f8f5ff);border:0;border-bottom:4px solid #e5def3;font-size:11px;font-weight:bold;color:#9a8fc0;padding:6px 1px;border-radius:14px;cursor:pointer;touch-action:manipulation;transition:transform .13s cubic-bezier(.2,1.7,.4,1),background .13s}
+nav button:active{transform:translateY(3px) scale(.97);border-bottom-width:1px}
+nav button span{display:block;font-size:24px}nav button.on{color:var(--p);background:linear-gradient(180deg,#f5efff,#e9dfff);border-bottom-color:#c7b0f2}
+#toast{position:fixed;left:50%;bottom:105px;transform:translateX(-50%) translateY(200px);background:#292344;color:#fff;padding:14px 20px;border-radius:30px;transition:.3s;max-width:90%;text-align:center;z-index:9}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#alert{display:none;position:fixed;top:0;left:0;right:0;background:var(--r);color:#fff;padding:16px;text-align:center;font-weight:bold;z-index:30;font-size:18px}
+#alert button{background:linear-gradient(180deg,#fff,#f3eaff);color:var(--rd);border:0;border-bottom:4px solid #e4d2dc;border-radius:12px;padding:8px 14px;margin-left:10px;font-weight:bold;cursor:pointer;touch-action:manipulation;transition:transform .13s cubic-bezier(.2,1.7,.4,1)}
+#alert button:active{transform:translateY(3px);border-bottom-width:1px}
+.fall{position:fixed;top:-30px;font-size:26px;z-index:20;pointer-events:none;animation:fall 2.2s linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(540deg);opacity:.7}}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div id="alert"><span id="alertTxt"></span><button onclick="this.parentNode.style.display='none'">OK</button></div>
+<header><h1>💜 Oops, I Forgot!</h1><p>Your life. Your plans. Our reminders.</p></header>
+<div class="wrap">
+
+<div class="page active" id="p-home">
+  <div class="card mb"><div id="mHome"></div><div class="bubble" id="hello">Boost is waking up...</div></div>
+  <div class="stats">
+    <div class="stat"><strong id="sStreak">0</strong>🔥 Streak</div>
+    <div class="stat"><strong id="sXp">0</strong>⭐ XP</div>
+    <div class="stat"><strong id="sLvl">1</strong>🏅 Level</div>
+  </div>
+  <div class="card"><b id="who"></b><div class="bar"><div id="xpBar"></div></div><small id="xpTxt"></small></div>
+  <div class="card"><h2>📋 Today's plan</h2><div id="today"></div></div>
+  <div class="card"><h2>🎯 Next up</h2><div class="msg" id="next">Add a reminder to start your countdown!</div>
+  <div class="stats" style="margin-top:12px"><div class="stat"><strong id="nUp">0</strong>Upcoming</div><div class="stat"><strong id="nLate">0</strong>Overdue</div><div class="stat"><strong id="nDone">0</strong>Done</div></div></div>
+  <div class="card"><h2>💡 Boost tip of the day</h2><div class="msg" id="tip"></div></div>
+  <button class="btn" onclick="go('rem')">➕ Add a reminder</button>
+</div>
+
+<div class="page" id="p-rem">
+  <div class="card"><h2>📅 New reminder</h2>
+  <input id="name" placeholder="What do you need to remember?" maxlength="80">
+  <small>Quick times:</small>
+  <div class="chips"><button type="button" class="chip" onclick="quick(1)">⏱️ In 1 hour</button><button type="button" class="chip" onclick="quick(2)">🌙 Tonight 8pm</button><button type="button" class="chip" onclick="quick(3)">☀️ Tomorrow 9am</button></div>
+  <div class="row"><input id="date" type="date"><input id="time" type="time"></div>
+  <div class="row"><select id="cat"><option>📚 School</option><option>💼 Work</option><option>👨‍👩‍👧 Family</option><option>👯 Friends</option><option>❤️ Personal</option><option>🎉 Other</option></select>
+  <select id="pri"><option value="Low">🟢 Low</option><option value="Medium" selected>🟠 Medium</option><option value="High">🔴 High</option></select></div>
+  <button class="btn g" id="addBtn">➕ Add reminder</button><p class="status" id="fs"></p></div>
+  <div class="card"><h2>🗓️ Your reminders</h2><input id="q" placeholder="🔍 Search...">
+  <div class="filters"><button data-f="all" class="on">All</button><button data-f="up">Upcoming</button><button data-f="done">Done</button></div>
+  <div id="list"></div></div>
+</div>
+
+<div class="page" id="p-boost">
+  <div class="card mb"><div id="mBoost"></div><div class="bubble" id="bm">Hey superstar! I am Boost! 💜</div></div>
+  <div class="card"><h2>🤖 Boost personality</h2>
+  <select id="mood"><option value="friendly">😊 Friendly</option><option value="motivational">🔥 Motivational</option><option value="calm">🌿 Calm</option><option value="funny">😂 Funny</option></select>
+  <div id="hb" style="display:none"><select id="humour"><option value="silly">🤪 Silly</option><option value="savage">💀 Savage</option><option value="sarcastic">😏 Sarcastic</option><option value="random">🎲 Random</option></select></div>
+  <button class="btn" id="smileBtn">✨ Make me smile</button></div>
+  <div class="card"><h2>🧠 Boost IQ</h2><p>Boost looks at your plans and helps you organise your day!</p>
+  <button class="btn" id="iqBtn">✨ Analyse my day</button><div class="msg" id="iq">I am ready to help you get organised! 💜</div></div>
+  <div class="card"><h2>🎭 How Boost feels</h2>
+  <div class="mood-row"><span>😊</span>Happy: all good, or the day is going well</div>
+  <div class="mood-row"><span>😟</span>Worried: you have overdue reminders</div>
+  <div class="mood-row"><span>😮</span>Wow: something is due within an hour</div>
+  <div class="mood-row"><span>🎉</span>Party: you just finished a reminder</div>
+  <div class="mood-row"><span>😴</span>Sleepy: it is night, so Boost wears pyjamas</div></div>
+</div>
+
+<div class="page" id="p-me">
+  <div class="card mb"><h2>🧑 About me</h2><div id="mMe"></div>
+  <input id="myName" placeholder="Your name" maxlength="20">
+  <small>Pick your avatar:</small><div class="chips" id="cAv"></div>
+  <div class="avatar-preview" aria-live="polite"><span id="avatarBig">😊</span><div><strong id="avatarLabel">Your avatar: 😊</strong><small>Tap an emoji to change it.</small></div></div></div>
+  <div class="card"><h2>🎨 Boost colour</h2><div class="chips" id="cBody"></div></div>
+  <div class="card"><h2>🌙 Pyjama colour</h2><p>Boost wears these from 9pm to 6am.</p><div class="chips" id="cPj"></div>
+  <button class="btn sm" id="pv">🌙 Preview pyjamas</button></div>
+  <div class="card"><h2>🎩 Hats</h2><p>Level up to unlock more!</p><div class="chips" id="cHead"></div></div>
+  <div class="card"><h2>🕶️ Glasses</h2><div class="chips" id="cFace"></div></div>
+  <div class="card"><h2>🔔 Alerts</h2><p>Boost shows a banner and beeps when a reminder is due, but only while this page is open.</p>
+  <button class="btn sm g" id="notif">🔔 Turn on phone alerts</button><p class="status" id="ns"></p></div>
+</div>
+
+<div class="page" id="p-tro">
+  <div class="card"><h2>📊 My stats</h2><div class="stats"><div class="stat"><strong id="tDone">0</strong>Done</div><div class="stat"><strong id="tBest">0</strong>Best streak</div><div class="stat"><strong id="tLvl">1</strong>Level</div></div></div>
+  <div class="card"><h2>🏆 Trophies</h2><div class="badges" id="badges"></div></div>
+  <div class="card"><h2>🔒 Backup</h2><p>Tap Make backup, copy the code and keep it in a notes app. To restore, paste it here and tap Restore.</p>
+  <textarea id="bk" rows="3" placeholder="Your backup code appears here..."></textarea>
+  <button class="btn sm" id="mk">💾 Make backup</button><button class="btn sm g" id="rs">♻️ Restore</button><p class="status" id="bs"></p></div>
+</div>
+
+</div>
+<nav>
+<button class="on" data-p="home"><span>🏠</span>Home</button>
+<button data-p="rem"><span>📅</span>Reminders</button>
+<button data-p="boost"><span>🤖</span>Boost</button>
+<button data-p="me"><span>🧑</span>Me</button>
+<button data-p="tro"><span>🏆</span>Trophies</button>
+</nav>
+<div id="toast"></div>
+<script>
+const $=id=>document.getElementById(id);
+function rd(k,f){try{const v=JSON.parse(localStorage.getItem(k));return v===null?f:v}catch(e){return f}}
+function wr(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}}
+function clean(l){if(!Array.isArray(l))return[];return l.filter(e=>e&&e.name&&e.date).map((e,i)=>({id:e.id||Date.now()+i,name:String(e.name),date:String(e.date),cat:e.cat||"🎉 Other",pri:e.pri||"Medium",done:e.done===true,alerted:e.alerted===true}))}
+let ev=clean(rd("oopsEvents",[])),flt="all",st=rd("oopsStats",{streak:0,last:"",best:0}),me=Object.assign({name:"",av:"😊",body:0,pj:0,head:"",face:""},rd("oopsMe",{})),pv=false,partyUntil=0;
+const pad=n=>String(n).padStart(2,"0"),T=e=>new Date(e.date).getTime(),pick=l=>l[Math.floor(Math.random()*l.length)];
+const BODY=[["#c4a6ff","#8b5cf6","#6d3fd1"],["#ffb3d9","#ff6fb5","#d44a92"],["#9fd8ff","#4aa8ff","#2f7fd0"],["#a8f0c0","#35b879","#259560"],["#ffd89a","#ffa94d","#d9822b"]];
+const PJ=["#ff8fc8","#5aa9ff","#4fd08a","#ffc93c"];
+const HEADS=[["🧢",1],["🎩",2],["🎓",3],["👑",5]],FACES=[["🕶️",2],["🥽",4]],AVS=["😊","😎","🦄","🐱","🐶","🦊","🚀","⚽"];
+function save(){if(!wr("oopsEvents",ev))toast("Cannot save here. Use Backup!");wr("oopsStats",st)}
+function toast(t){const x=$("toast");x.textContent=t;x.classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>x.classList.remove("show"),3500)}
+function confetti(){const e=["🎉","💜","⭐","🎊","✨"];for(let i=0;i<26;i++){const s=document.createElement("span");s.className="fall";s.textContent=pick(e);s.style.left=Math.random()*95+"vw";s.style.animationDelay=Math.random()*.6+"s";document.body.appendChild(s);setTimeout(()=>s.remove(),3200)}}
+function go(p){document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));$("p-"+p).classList.add("active");document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.p===p));window.scrollTo(0,0)}
+function left(ms){const d=Math.floor(ms/864e5),h=Math.floor(ms%864e5/36e5),m=Math.floor(ms%36e5/6e4),s=Math.floor(ms%6e4/1e3);return d>0?d+"d "+h+"h "+m+"m":h>0?h+"h "+m+"m "+s+"s":m+"m "+s+"s"}
+const up=()=>ev.filter(e=>!e.done&&T(e)>Date.now()).sort((a,b)=>T(a)-T(b));
+const late=()=>ev.filter(e=>!e.done&&T(e)<=Date.now());
+const sameDay=e=>new Date(e.date).toDateString()===new Date().toDateString();
+const lvl=()=>Math.floor(ev.filter(e=>e.done).length*10/50)+1;
+const isNight=()=>pv||new Date().getHours()>=21||new Date().getHours()<6;
+
+function moodNow(){
+  const u=up()[0];
+  if(late().length)return"worried";
+  if(u&&T(u)-Date.now()<=36e5)return"wow";
+  if(Date.now()<partyUntil)return"party";
+  if(isNight())return"sleepy";
+  return"happy"
+}
+const MH='<div class="mascot"><div class="cap"></div><span class="hat"></span><div class="ear l"></div><div class="ear rt"></div><div class="eye l"></div><div class="eye rt"></div><div class="brow l"></div><div class="brow rt"></div><div class="mouth"></div><span class="face"></span><span class="zzz">💤</span><div class="pj"></div></div>';
+function paint(){
+  const b=BODY[me.body]||BODY[0],r=document.documentElement.style,n=isNight(),m=moodNow();
+  r.setProperty("--b1",b[0]);r.setProperty("--b2",b[1]);r.setProperty("--b3",b[2]);r.setProperty("--pj",PJ[me.pj]||PJ[0]);
+  document.body.classList.toggle("night",n);
+  document.querySelectorAll(".mascot").forEach(el=>{
+    el.className="mascot m-"+m+(n?" night-m":"");
+    el.querySelector(".hat").textContent=me.head;el.querySelector(".face").textContent=me.face
+  })
+}
+function chips(id,items,cur,pick2){
+  const box=$(id);box.innerHTML="";
+  items.forEach(it=>{
+    const locked=it.lock>lvl(),b=document.createElement("button");
+    b.type="button";
+    b.className="chip"+(it.v===cur?" on":"")+(locked?" lock":"");
+    b.textContent=locked?"🔒"+it.lock:it.t;
+    b.setAttribute("aria-pressed",String(it.v===cur));
+    b.setAttribute("aria-label",locked?"Unlock at level "+it.lock:"Choose "+it.t);
+    if(it.c)b.style.color=it.c;
+    b.addEventListener("click",()=>{
+      if(locked){toast("🔒 Reach level "+it.lock+" to unlock!");return}
+      pick2(it.v);
+    });
+    box.appendChild(b);
+  });
+}
+function setMe(k,v){
+  me[k]=v;
+  const saved=wr("oopsMe",me);
+  renderMe();paint();hello();
+  if(k==="av")toast((saved?"✅ Avatar saved: ":"Avatar changed: ")+v);
+  else if(!saved)toast("Your browser could not save this change. Make a backup!");
+}
+function renderMe(){
+  chips("cAv",AVS.map(a=>({t:a,v:a})),me.av,v=>setMe("av",v));
+  $("avatarBig").textContent=me.av||"😊";
+  $("avatarLabel").textContent="Your avatar: "+(me.av||"😊");
+  chips("cBody",BODY.map((c,i)=>({t:"●",v:i,c:c[1]})),me.body,v=>setMe("body",v));
+  chips("cPj",PJ.map((c,i)=>({t:"●",v:i,c:c})),me.pj,v=>setMe("pj",v));
+  chips("cHead",[{t:"🚫",v:"",lock:0}].concat(HEADS.map(h=>({t:h[0],v:h[0],lock:h[1]}))),me.head,v=>setMe("head",v));
+  chips("cFace",[{t:"🚫",v:"",lock:0}].concat(FACES.map(h=>({t:h[0],v:h[0],lock:h[1]}))),me.face,v=>setMe("face",v))
+}
+const quick=k=>{const d=new Date();if(k===1)d.setTime(Date.now()+36e5);if(k===2){d.setHours(20,0,0,0);if(d<=new Date())d.setDate(d.getDate()+1)}if(k===3){d.setDate(d.getDate()+1);d.setHours(9,0,0,0)}setDT(d)};
+function setDT(d){$("date").value=d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());$("time").value=pad(d.getHours())+":"+pad(d.getMinutes())}
+
+function add(){
+  const s=$("fs"),name=$("name").value.trim(),d=$("date").value,t=$("time").value;
+  if(!name){s.textContent="😂 Oops! Type what you need to remember first.";return}
+  if(!d||!t){s.textContent="📅 Please pick a date and a time.";return}
+  const full=d+"T"+t;
+  if(new Date(full).getTime()<=Date.now()){s.textContent="⏰ That time has already passed. Pick a future time!";return}
+  ev.push({id:Date.now()+Math.random(),name:name,date:full,cat:$("cat").value,pri:$("pri").value,done:false,alerted:false});
+  save();$("name").value="";setDT(new Date(Date.now()+36e5));s.textContent="✅ Added!";toast("💜 Added: "+name);render()
+}
+function toggle(id){
+  const e=ev.find(x=>x.id===id);if(!e)return;
+  const before=lvl();e.done=!e.done;
+  if(e.done){
+    const today=new Date().toDateString(),y=new Date(Date.now()-864e5).toDateString();
+    if(st.last!==today){st.streak=(st.last===y)?st.streak+1:1;st.last=today}
+    st.best=Math.max(st.best||0,st.streak);partyUntil=Date.now()+15000;
+    confetti();toast(lvl()>before?"🚀 LEVEL UP! You are level "+lvl()+"!":"🎉 +10 XP! "+e.name+" is done!")
+  }
+  save();render()
+}
+function remove(id){ev=ev.filter(x=>x.id!==id);save();render();toast("🗑️ Deleted")}
+
+function render(){
+  const done=ev.filter(e=>e.done).length,xp=done*10,L=lvl(),today=new Date().toDateString(),y=new Date(Date.now()-864e5).toDateString();
+  const sk=(st.last===today||st.last===y)?st.streak:0;
+  $("nUp").textContent=up().length;$("nLate").textContent=late().length;$("nDone").textContent=done;
+  $("sXp").textContent=xp;$("sLvl").textContent=L;$("sStreak").textContent=sk;
+  $("tDone").textContent=done;$("tBest").textContent=st.best||0;$("tLvl").textContent=L;
+  $("xpBar").style.width=(xp%50)/50*100+"%";
+  $("who").textContent=me.av+" "+(me.name||"Legend")+" · Level "+L+" · "+(50-xp%50)+" XP to next level";
+  const q=$("q").value.toLowerCase();
+  let l=ev.filter(e=>(e.name+" "+e.cat).toLowerCase().includes(q));
+  if(flt==="up")l=l.filter(e=>!e.done);if(flt==="done")l=l.filter(e=>e.done);
+  l.sort((a,b)=>(a.done-b.done)||(T(a)-T(b)));
+  const box=$("list");box.innerHTML="";
+  if(!l.length){const p=document.createElement("p");p.textContent=q?"No matching reminders. 🔍":"Nothing here yet. Add one! 💜";box.appendChild(p)}
+  l.forEach(e=>{
+    const lt=!e.done&&T(e)<=Date.now(),div=document.createElement("div");
+    div.className="event p"+e.pri+(e.done?" done":"")+(lt?" late":"");
+    const a=document.createElement("strong");a.textContent="📌 "+e.name;
+    const b=document.createElement("p");b.textContent=new Date(e.date).toLocaleString("en-GB",{weekday:"short",day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"});
+    const c=document.createElement("p");c.textContent=e.cat+" | "+e.pri;
+    const s=document.createElement("p");s.className="left";s.textContent=e.done?"✅ Completed":lt?"⚠️ Overdue!":"⏳ "+left(T(e)-Date.now())+" to go";
+    const ok=document.createElement("button");ok.className="btn sm g";ok.textContent=e.done?"↩ Undo":"✓ Complete";ok.onclick=()=>toggle(e.id);
+    const dl=document.createElement("button");dl.className="btn sm r";dl.textContent="🗑️ Delete";dl.onclick=()=>remove(e.id);
+    div.append(a,b,c,s,ok,dl);box.appendChild(div)
+  });
+  const td=ev.filter(e=>!e.done&&sameDay(e)).sort((a,b)=>T(a)-T(b)),tb=$("today");
+  tb.textContent=td.length?"":"Nothing planned for today. Enjoy! 🌿";
+  td.forEach(e=>{const p=document.createElement("p");p.textContent=new Date(e.date).toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"})+" · "+e.name;tb.appendChild(p)});
+  nextUp();hello();badges();paint()
+}
+function nextUp(){const n=up()[0];$("next").textContent=n?n.name+"\n"+left(T(n)-Date.now())+" to go! 💜":"No upcoming reminders. Enjoy some free time! 💜"}
+function hello(){
+  const h=new Date().getHours(),u=up(),td=u.filter(sameDay),m=moodNow(),nm=me.name||"legend";
+  const g=(h>=21||h<5)?"Good night":h<12?"Good morning":h<18?"Good afternoon":"Good evening";
+  let t=g+", "+nm+"! "+((h>=21||h<5)?"🌙":h<12?"☀️":h<18?"🌤️":"🌆")+"\n";
+  if(m==="worried")t+="😟 I am worried! You have "+late().length+" overdue. Tick them off or delete them.";
+  else if(m==="wow")t+="😮 Wow, "+u[0].name+" is due in "+left(T(u[0])-Date.now())+"! Get ready!";
+  else if(m==="party")t+="🎉 Amazing job! Boost is doing a happy dance!";
+  else if(m==="sleepy")t+="😴 Zzz... it is late. Boost is in pyjamas. Anything for tomorrow?";
+  else if(!ev.length)t+="Add your first reminder and I will keep an eye on it! 💜";
+  else if(!u.length)t+="Nothing coming up. Super organised, or did you forget to add something? 😂";
+  else if(td.length)t+="You have "+td.length+(td.length===1?" thing":" things")+" today. Let us make it ridiculously productive! 🚀";
+  else t+="Nothing today, but "+u.length+" coming up. I have got your back! 💜";
+  $("hello").textContent=t
+}
+function iq(){
+  const u=up(),td=u.filter(sameDay),hi=u.filter(e=>e.pri==="High"),lt=late();
+  let m="🧠 BOOST IQ REPORT\n\n";
+  if(!u.length&&!lt.length)m+="Your schedule is clear! Add a reminder whenever you need me. 💜";
+  else{
+    m+="📋 Upcoming: "+u.length+"\n"+(td.length?"📅 Today: "+td.length+"\n":"🌿 Nothing today. Nice!\n");
+    if(lt.length){m+="\n⚠️ OVERDUE:\n";lt.forEach(e=>{m+="• "+e.name+"\n"})}
+    if(hi.length){m+="\n🔴 HIGH PRIORITY:\n";hi.forEach(e=>{m+="⭐ "+e.name+"\n"})}
+    if(u.length)m+="\n🎯 Next: "+u[0].name+" in "+left(T(u[0])-Date.now())+"\n\n💡 Tip: "+(hi.length?"Do your high-priority things first!":"Start preparing early so you are not rushing!")
+  }
+  $("iq").textContent=m
+}
+const TIPS=["Write reminders the moment you think of them. Your brain will thank you!","Set a reminder 1 hour before, not at the last minute.","Mark High priority only for the really important things.","Check your plan each morning. It takes 10 seconds!","Finish one small reminder to build your streak.","Take a break after a big task. You earned it!","Tidy up overdue reminders so Boost stays happy."];
+const M={
+friendly:["Hey superstar! 💜 Do not forget {e}!","Your future self says thank you for remembering {e}! 😊","Giant virtual hug! 🤗 Remember {e}!","Hello legend! Time to get ready for {e}!","You are doing AMAZING! Do not forget {e}!","Look at you being organised! I am so proud. 💜","You make remembering look easy! {e} is coming up!"],
+motivational:["LET US GOOOO! 🔥 Time to smash {e}!","Champions do not forget their plans. Go get {e}!","BIG ENERGY! BIG DREAMS! BIG RESULTS!","Wake up. Show up. Smash it. 💪","YOUR TIME IS NOW! {e} will not do itself!","Small steps, big wins. Start with {e}! 🚀","You are stronger than your excuses!"],
+calm:["Take a breath. 🌿 Remember {e}. You have got this.","One thing at a time. You are doing just fine.","No rush. Take a moment and get ready for {e}.","Be kind to yourself. Remember {e}.","Everything starts with one small step.","Slow down, breathe in, breathe out. 🌙","A peaceful mind and an organised day."],
+silly:["🚨 BREAKING NEWS: Local human nearly forgot {e}!","A penguin has been dispatched to remind you about {e}. 🐧","A potato told me to remind you about {e}. I do not question potatoes. 🥔","Your brain has 47 tabs open and none are working.","The spaghetti council demands you remember {e}. 🍝","A llama in sunglasses says do {e}. 🦙","Your socks have filed a complaint about {e}."],
+savage:["You remembered to scroll for 3 hours but nearly forgot {e}? 💀","Your memory needs a software update. Immediately.","Even Internet Explorer remembers things faster than you.","You need a reminder to remember your reminders.","I am carrying this entire friendship. Remember {e}!","Your brain left the group chat. Remember {e}.","A goldfish is judging you right now. 🐟"],
+sarcastic:["Oh wow! Another reminder! Who could have predicted this? 🙄","Surprise! You have {e}. Shocking.","Incredible memory you have got there. Truly inspirational.","Do not thank me all at once.","I am sure you would have remembered {e}. Eventually. 😏","Absolutely flawless organisation. If we ignore everything.","Oh good, {e}. My favourite. Said no one."],
+random:["THE POTATO COUNCIL HAS DECIDED: Remember {e}! 🥔","A mysterious goose knows what you did last Tuesday. 🪿","A frog in a tiny hat believes in you. 🐸","A wizard named Steve has entered your reminders. 🧙","An alien travelled 4 million light years to remind you about {e}. 👽","The moon sent a postcard about {e}. 🌙","A cheese sandwich believes in you. 🥪"]};
+function smile(){const m=$("mood").value,k=m==="funny"?$("humour").value:m,n=up()[0];$("bm").textContent=pick(M[k]).split("{e}").join(n?n.name:"your next event")}
+function mood(){$("hb").style.display=$("mood").value==="funny"?"block":"none";wr("oopsPrefs",{m:$("mood").value,h:$("humour").value})}
+function badges(){
+  const n=ev.filter(e=>e.done).length,box=$("badges");box.innerHTML="";
+  [["🌟","First Steps",1],["🔥","Getting Started",5],["🏆","Superstar",10],["👑","Legend",25],["💎","Reminder Royalty",50],["🚀","Unstoppable",100]].forEach(b=>{
+    const d=document.createElement("div");d.className="badge"+(n<b[2]?" locked":"");
+    const em=document.createElement("span");em.className="em";em.textContent=b[0];
+    const t=document.createElement("strong");t.textContent=b[1];
+    const p=document.createElement("p");p.textContent="Complete "+b[2]+(b[2]===1?" reminder":" reminders");
+    const s=document.createElement("small");s.textContent=n>=b[2]?"UNLOCKED! 🎉":n+"/"+b[2];
+    d.append(em,t,p,s);box.appendChild(d)})
+}
+function beep(){try{const c=new (window.AudioContext||window.webkitAudioContext)(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=880;g.gain.value=.15;o.start();o.stop(c.currentTime+.4)}catch(e){}}
+function fire(e){
+  $("alertTxt").textContent="⏰ Time for: "+e.name;$("alert").style.display="block";beep();
+  try{if(window.Notification&&Notification.permission==="granted")new Notification("Oops, I Forgot! 💜",{body:e.name})}catch(x){}
+  try{if(navigator.vibrate)navigator.vibrate([200,100,200])}catch(x){}
+}
+function checkAlerts(){
+  let ch=false;
+  ev.forEach(e=>{if(!e.done&&!e.alerted&&T(e)<=Date.now()){e.alerted=true;ch=true;if(Date.now()-T(e)<=3e5)fire(e)}});
+  if(ch){save();render()}
+}
+function mkBk(){$("bk").value=JSON.stringify(ev);$("bs").textContent="✅ Backup made! Copy it into a notes app."}
+function rsBk(){try{const d=clean(JSON.parse($("bk").value));if(!d.length){$("bs").textContent="😕 No reminders in that backup.";return}ev=d;save();render();$("bs").textContent="✅ Restored "+d.length+" reminders!"}catch(e){$("bs").textContent="😕 That is not a backup code."}}
+
+const pf=rd("oopsPrefs",{});if(pf.m)$("mood").value=pf.m;if(pf.h)$("humour").value=pf.h;mood();
+["mHome","mBoost","mMe"].forEach(id=>{$(id).innerHTML=MH});
+$("tip").textContent=TIPS[Math.floor(Date.now()/864e5)%TIPS.length];
+$("myName").value=me.name;$("myName").oninput=()=>{me.name=$("myName").value.trim();wr("oopsMe",me);render()};
+$("pv").onclick=()=>{pv=!pv;$("pv").textContent=pv?"☀️ Stop preview":"🌙 Preview pyjamas";paint();hello()};
+$("notif").onclick=()=>{try{Notification.requestPermission().then(p=>{$("ns").textContent=p==="granted"?"✅ Phone alerts on!":"😕 Alerts blocked. You can still see banners in the app."})}catch(e){$("ns").textContent="😕 This browser cannot do phone alerts."}};
+$("addBtn").onclick=add;$("iqBtn").onclick=iq;$("smileBtn").onclick=smile;$("mood").onchange=mood;$("humour").onchange=mood;$("q").oninput=render;$("mk").onclick=mkBk;$("rs").onclick=rsBk;
+document.querySelectorAll("nav button").forEach(b=>{b.onclick=()=>go(b.dataset.p)});
+document.querySelectorAll(".filters button").forEach(b=>{b.onclick=()=>{flt=b.dataset.f;document.querySelectorAll(".filters button").forEach(x=>x.classList.remove("on"));b.classList.add("on");render()}});
+setDT(new Date(Date.now()+36e5));renderMe();render();checkAlerts();
+setInterval(nextUp,1000);setInterval(()=>{checkAlerts();render()},15000);
+</script>
+</body>
+</html>
